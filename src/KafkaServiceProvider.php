@@ -10,7 +10,7 @@ class KafkaServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'queue.php', 'queue'
+            __DIR__.'/queue.php', 'queue'
         );
     }
 
