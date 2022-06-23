@@ -19,25 +19,27 @@ class KafkaQueue extends Queue implements QueueContract
 
     public function size($queue = null)
     {
+        dd('size');
     }
 
     public function push($job, $data = '', $queue = null)
     {
-        $topic = $this->producer->newTopic($queue ?? $this->config['queue']);
-        $topic->produce(RD_KAFKA_PARTITION_UA, 0, serialize($job));
-        $this->producer->flush($this->config['produce_flush_time']);
+        $this->produce($job, $data, $queue ?? $this->config['queue']);
     }
 
     public function pushOn($queue, $job, $data = '')
     {
+        $this->produce($job, $data, $queue);
     }
 
     public function pushRaw($payload, $queue = null, array $options = [])
     {
+        dd('pushRaw');
     }
 
     public function later($delay, $job, $data = '', $queue = null)
     {
+        dd('later');
     }
 
 
@@ -68,4 +70,10 @@ class KafkaQueue extends Queue implements QueueContract
         }
     }
 
+    private function produce($job, $data = '', $queue)
+    {
+        $topic = $this->producer->newTopic($queue);
+        $topic->produce(RD_KAFKA_PARTITION_UA, 0, serialize($job));
+        $this->producer->flush($this->config['produce_flush_time']);
+    }
 }
